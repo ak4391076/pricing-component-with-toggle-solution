@@ -1,0 +1,523 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Solution to Pricing component with toggle on Frontend Mentor"
+    />
+
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="./assets/images/favicon-32x32.png"
+    />
+
+    <link
+      rel="preload"
+      href="./assets/fonts/Montserrat-Bold.subset.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+
+    <title>Frontend Mentor | Pricing component with toggle solution</title>
+
+    <style>
+      @font-face {
+        font-family: Montserrat;
+        font-weight: 700;
+        font-style: normal;
+
+        font-display: swap;
+        src: url("./assets/fonts/Montserrat-Bold.subset.woff2") format("woff2");
+      }
+
+      @font-face {
+        font-family: "Montserrat Fallback";
+        font-weight: 700;
+
+        ascent-override: 88.71%;
+        descent-override: 23%;
+        line-gap-override: 0%;
+        size-adjust: 109.12%;
+        src: local("Arial Bold"), local("Arial-BoldMT");
+      }
+
+      :root {
+        --font-family:
+          "Montserrat", "Montserrat Fallback", -apple-system,
+          BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        --color-white: hsl(0deg 0% 100%);
+        --color-blue-50: hsl(240deg 78% 98%);
+        --color-gray-650: hsl(233deg 13% 49%);
+        --color-gray-650-50: hsl(233deg 13% 49% / 50%);
+        --color-gray-650-25: hsl(233deg 13% 49% / 25%);
+        --color-gray-700: hsl(232deg 13% 33%);
+        --color-stop-1: hsl(237deg 73% 79%);
+        --color-stop-2: hsl(238deg 63% 64%);
+        --gradient-linear-right: linear-gradient(
+          to right,
+          var(--color-stop-1),
+          var(--color-stop-2)
+        );
+        --gradient-linear-bottom-right: linear-gradient(
+          to bottom right,
+          var(--color-stop-1),
+          var(--color-stop-2)
+        );
+        --shadow: hsl(244deg 61% 89% / 50.2%);
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: var(--font-family);
+        font-optical-sizing: auto;
+        font-weight: 700;
+        font-style: normal;
+      }
+
+      .sr-only {
+        position: absolute;
+
+        overflow: hidden;
+
+        width: 1px;
+        height: 1px;
+        margin: -1px;
+        padding: 0;
+        border: 0;
+
+        white-space: nowrap;
+
+        clip-path: inset(50%);
+      }
+
+      .pricing-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        min-height: 100vh;
+        min-height: 100dvh;
+        padding: 4rem 1.5rem;
+
+        background-color: var(--color-blue-50);
+        background-image: url("./assets/images/bg-top.svg");
+        background-repeat: no-repeat;
+        background-position: calc(100% + 12.2rem) -2.27rem;
+      }
+
+      .pricing-container h1 {
+        font-size: 2rem;
+        color: var(--color-gray-650);
+      }
+
+      .billing-control {
+        display: flex;
+        flex-wrap: nowrap;
+        gap: 1.5rem;
+        align-items: center;
+        justify-content: center;
+
+        margin-top: 2.5rem;
+
+        font-size: 0.9375rem;
+        color: var(--color-gray-650-50);
+      }
+
+      .switch {
+        position: relative;
+
+        display: inline-block;
+
+        width: 3.5rem;
+        height: 2rem;
+        border-radius: 2.125rem;
+      }
+
+      .switch input {
+        cursor: pointer;
+
+        position: absolute;
+        inset: 0;
+
+        width: 100%;
+        height: 100%;
+        margin: 0;
+
+        opacity: 0;
+      }
+
+      .slider {
+        pointer-events: none;
+
+        position: absolute;
+        inset: 0;
+
+        border-radius: 2.125rem;
+
+        background: var(--gradient-linear-right);
+      }
+
+      .slider::before {
+        content: "";
+
+        position: absolute;
+        bottom: 0.25rem;
+        left: 0.25rem;
+
+        width: 1.5rem;
+        height: 1.5rem;
+        border-radius: 50%;
+
+        background-color: white;
+      }
+
+      @media (hover: hover) {
+        .switch:hover {
+          opacity: 0.5;
+        }
+      }
+
+      .switch:has(:focus-visible) {
+        outline: 0.125rem solid var(--color-gray-700);
+        outline-offset: 0.125rem;
+      }
+
+      .switch input:checked + .slider::before {
+        transform: translateX(1.5rem);
+      }
+
+      .pricing-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+
+        width: 100%;
+        max-width: 24rem;
+        margin-top: 5rem;
+      }
+
+      .card {
+        min-width: 0;
+        padding: 1.9375rem 1.8125rem;
+        border-radius: 0.625rem;
+
+        text-align: center;
+
+        background-color: var(--color-white);
+        box-shadow: 0 1.25rem 2.5rem var(--shadow);
+      }
+
+      .card.featured {
+        color: var(--color-white);
+        background: var(--gradient-linear-bottom-right);
+      }
+
+      .card .title {
+        font-size: 1.125rem;
+        line-height: 1.75rem;
+        color: var(--color-gray-650);
+      }
+
+      .card.featured .title {
+        color: var(--color-white);
+      }
+
+      .price-box {
+        display: flex;
+        flex-wrap: nowrap;
+        gap: 0.25rem;
+        align-items: center;
+        justify-content: center;
+
+        margin-top: 1.5rem;
+
+        font-size: clamp(3.25rem, 15vw, 4.5rem);
+        line-height: 1;
+        color: var(--color-gray-700);
+      }
+
+      .card.featured .price-box {
+        color: var(--color-white);
+      }
+
+      .price-currency {
+        font-size: 0.5556em;
+      }
+
+      .card-price {
+        letter-spacing: -0.03rem;
+      }
+
+      .features {
+        margin-top: 2rem;
+        font-size: 0.9375rem;
+        color: var(--color-gray-650);
+        list-style: none;
+      }
+
+      .card.featured .features {
+        color: var(--color-white);
+      }
+
+      .features li {
+        min-height: 3.3125rem;
+        padding-block: 1rem;
+        border-bottom: 0.0625rem solid var(--color-gray-650-25);
+      }
+
+      .features li:first-child {
+        border-top: 0.0625rem solid var(--color-gray-650-25);
+      }
+
+      .card.featured .features li {
+        border-color: hsl(0deg 0% 100% / 25%);
+      }
+
+      .cta-link {
+        display: inline-block;
+
+        width: 100%;
+        margin-top: 2rem;
+        padding-top: 0.9375rem;
+        padding-bottom: 0.9375rem;
+        border: 0.0625rem solid var(--color-white);
+        border-radius: 0.375rem;
+
+        font-size: 0.8125rem;
+        line-height: 1;
+        color: var(--color-white);
+        text-decoration: none;
+        text-transform: uppercase;
+        letter-spacing: 0.1rem;
+
+        background: var(--gradient-linear-right);
+      }
+
+      @media (hover: hover) {
+        .cta-link:hover {
+          border-color: var(--color-stop-2);
+          color: var(--color-stop-2);
+          background: transparent;
+        }
+      }
+
+      .cta-link:focus-visible {
+        outline: 0.125rem solid var(--color-gray-700);
+        outline-offset: 0.125rem;
+      }
+
+      .card.featured .cta-link {
+        color: var(--color-gray-650);
+        background: var(--color-white);
+      }
+
+      @media (hover: hover) {
+        .card.featured .cta-link:hover {
+          border-color: var(--color-white);
+          color: var(--color-white);
+          background: transparent;
+        }
+      }
+
+      .card.featured .cta-link:focus-visible {
+        outline: 0.125rem solid var(--color-white);
+        outline-offset: 0.125rem;
+      }
+
+      @media (width >= 64rem) {
+        .pricing-container {
+          padding-top: 4.5rem;
+
+          background-image:
+            url("./assets/images/bg-top.svg"),
+            url("./assets/images/bg-bottom.svg");
+          background-repeat: no-repeat, no-repeat;
+          background-position:
+            right top,
+            left bottom;
+          background-size:
+            auto auto,
+            auto auto;
+        }
+
+        .pricing-grid {
+          display: grid;
+          grid-template-columns:
+            [grid-start]
+            repeat(3, [col-start] minmax(0, 1fr) [col-end])
+            [grid-end];
+          gap: 0;
+          align-items: center;
+
+          max-width: 66rem;
+          margin-top: 4rem;
+        }
+
+        .card.featured {
+          z-index: 1;
+          padding-top: 3.5rem;
+          padding-bottom: 3.5rem;
+        }
+      }
+
+      @media (prefers-reduced-motion: no-preference) {
+        .slider {
+          transition: 0.3s ease;
+        }
+
+        .slider::before {
+          transition: 0.3s ease;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="pricing-container">
+      <h1>Our Pricing</h1>
+      <div class="billing-control">
+        <span>Annually</span>
+        <label class="switch">
+          <span class="sr-only">Monthly billing</span>
+          <input
+            type="checkbox"
+            id="billing-toggle"
+            role="switch"
+            aria-describedby="billing-help"
+          />
+          <span class="slider" aria-hidden="true"></span>
+        </label>
+        <span>Monthly</span>
+        <span class="sr-only" id="billing-help">
+          Turn on for monthly prices. Turn off for annual prices.
+        </span>
+      </div>
+      <p
+        class="sr-only"
+        id="billing-status"
+        role="status"
+        aria-live="polite"
+      ></p>
+      <div class="pricing-grid">
+        <article class="card" id="basic">
+          <h2 class="title">Basic</h2>
+          <div class="price-box">
+            <span class="price-currency">&dollar;</span>
+            <span
+              class="card-price"
+              data-monthly="19.99"
+              data-annually="199.99"
+            >
+              199.99
+            </span>
+            <span class="sr-only period">per year</span>
+          </div>
+          <ul class="features" role="list">
+            <li>500 GB Storage</li>
+            <li>2 Users Allowed</li>
+            <li>Send up to 3 GB</li>
+          </ul>
+          <a
+            href="#basic"
+            class="cta-link"
+            aria-label="Learn more about the Basic plan"
+          >
+            Learn more
+          </a>
+        </article>
+        <article class="card featured" id="professional">
+          <h2 class="title">Professional</h2>
+          <div class="price-box">
+            <span class="price-currency">&dollar;</span>
+            <span
+              class="card-price"
+              data-monthly="24.99"
+              data-annually="249.99"
+            >
+              249.99
+            </span>
+            <span class="sr-only period">per year</span>
+          </div>
+          <ul class="features" role="list">
+            <li>1 TB Storage</li>
+            <li>5 Users Allowed</li>
+            <li>Send up to 10 GB</li>
+          </ul>
+          <a
+            href="#professional"
+            class="cta-link"
+            aria-label="Learn more about the Professional plan"
+          >
+            Learn more
+          </a>
+        </article>
+        <article class="card" id="master">
+          <h2 class="title">Master</h2>
+          <div class="price-box">
+            <span class="price-currency">&dollar;</span>
+            <span
+              class="card-price"
+              data-monthly="39.99"
+              data-annually="399.99"
+            >
+              399.99
+            </span>
+            <span class="sr-only period">per year</span>
+          </div>
+          <ul class="features" role="list">
+            <li>2 TB Storage</li>
+            <li>10 Users Allowed</li>
+            <li>Send up to 20 GB</li>
+          </ul>
+          <a
+            href="#master"
+            class="cta-link"
+            aria-label="Learn more about the Master plan"
+          >
+            Learn more
+          </a>
+        </article>
+      </div>
+    </main>
+    <script>
+      const toggle = document.getElementById("billing-toggle");
+      const status = document.getElementById("billing-status");
+      const prices = document.querySelectorAll(".card-price");
+      const periods = document.querySelectorAll(".period");
+
+      function render({ announce = false } = {}) {
+        const monthly = toggle.checked;
+
+        prices.forEach((priceElement) => {
+          priceElement.textContent = monthly
+            ? priceElement.dataset.monthly
+            : priceElement.dataset.annually;
+        });
+
+        periods.forEach((periodElement) => {
+          periodElement.textContent = monthly ? "per month" : "per year";
+        });
+
+        if (announce) {
+          status.textContent = `Showing ${monthly ? "monthly" : "annual"} prices`;
+        }
+      }
+
+      toggle.addEventListener("change", () => render({ announce: true }));
+
+      render();
+      window.addEventListener("pageshow", () => render());
+    </script>
+  </body>
+</html>
