@@ -28,7 +28,7 @@ Users should be able to:
 ### Links
 
 - [Solution](https://github.com/ak4391076/pricing-component-with-toggle-solution)
-- [Live site](https://your-live-site-url.com)
+- [Live site](https://ak4391076.github.io/pricing-component-with-toggle-solution/)
 
 ## My process
 
